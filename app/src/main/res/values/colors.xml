@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="GBackground0">#ECFFE6</color>
+    <color name="GBackground">#D6EFD8</color>
+    <color name="GTextView1">#80AF81</color>
+    <color name="GTextView2">#508D4E</color>
+    <color name="GTextView3">#1A5319</color>
+    <color name="color1">#aabde2</color>
+    <color name="color2">#eec5a1</color>
+    <color name="color3">#dda8a8</color>
+</resources>
