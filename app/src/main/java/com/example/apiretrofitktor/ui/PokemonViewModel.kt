@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.apiretrofitktor.ServiceLocatorAPI
 import com.example.apiretrofitktor.data.model.Response
 import com.example.apiretrofitktor.data.remote.NetworkService
 import kotlinx.coroutines.launch
@@ -18,10 +19,11 @@ class PokemonViewModel(
 
     val response: MutableLiveData<Response> = MutableLiveData<Response>()
     var cachePokemon : MutableLiveData<Response> = MutableLiveData()
+    val ktorClient = ServiceLocatorAPI.initKtorClient()
     fun getPokemon(limit: Int, offset: Int) {
         viewModelScope.launch {
             _isLoading.value = true
-            response.value = networkService.getPokemonList(limit,offset)
+            response.value = ktorClient.getPokemonList(limit,offset)
             _isLoading.value = false
         }
     }

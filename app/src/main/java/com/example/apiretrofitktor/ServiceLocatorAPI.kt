@@ -1,5 +1,6 @@
 package com.example.apiretrofitktor
 
+import com.example.apiretrofitktor.data.remote.ktor.KtorClient
 import com.example.apiretrofitktor.data.remote.retrofit.ApiServicePokemon
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -8,8 +9,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 // Before Dependency Injection enter the playground
 object ServiceLocatorAPI {
-    private var API_LINK: String = "https://pokeapi.co/api/v2/"
+    var API_LINK: String = "https://pokeapi.co/api/v2/"
     var retrofit : Retrofit? = null
+    var ktorClient: KtorClient? = null
+
     val httpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
     private val okHttpClient: OkHttpClient =
         OkHttpClient
@@ -36,5 +39,12 @@ object ServiceLocatorAPI {
                 .build()
         }
         return retrofit!!.create(ApiServicePokemon::class.java)
+    }
+
+    fun initKtorClient(): KtorClient{
+        if(ktorClient == null){
+            ktorClient = KtorClient()
+        }
+        return ktorClient!!
     }
 }

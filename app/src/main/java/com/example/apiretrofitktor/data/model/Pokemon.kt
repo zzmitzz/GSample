@@ -2,7 +2,10 @@ package com.example.apiretrofitktor.data.model
 
 import android.util.Log
 import com.example.apiretrofitktor.ui.model.PokemonItem
+import kotlinx.serialization.Serializable
 
+
+@Serializable
 data class Pokemon(
     val name: String,
     val url: String

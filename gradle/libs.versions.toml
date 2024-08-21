@@ -10,6 +10,8 @@ loggingInterceptor = "5.0.0-alpha.11"
 material = "1.12.0"
 activity = "1.9.1"
 constraintlayout = "2.1.4"
+ktor = "2.3.12"
+logback_version="1.5.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -26,6 +28,13 @@ gson = {group = "com.squareup.retrofit2", name = "converter-gson", version = "2.
 glide = {group = "com.github.bumptech.glide", name = "glide", version = "4.15.1"}
 glide-annotations = {group = "com.github.bumptech.glide", name = "compiler", version = "4.15.1"}
 androidx-viewmodel = {group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version = "2.8.4"}
+ktor = {group = "io.ktor", name = "ktor-client-android", version.ref = "ktor"}
+ktor-serialization = {group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor"}
+ktor-cio = {group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor"}
+slf4j = {group = "org.slf4j", name = "slf4j-simple", version = "1.7.36"}
+ktor-logging = {group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor"}
+ktor-okHttp = {group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor"}
+ktor-contentNegotiation = {group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor"}
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

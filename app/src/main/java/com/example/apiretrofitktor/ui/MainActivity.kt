@@ -1,11 +1,13 @@
 package com.example.apiretrofitktor.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
@@ -17,6 +19,10 @@ import com.example.apiretrofitktor.data.model.toPokemonItem
 import com.example.apiretrofitktor.data.remote.retrofit.RetrofitService
 import com.example.apiretrofitktor.databinding.ActivityMainBinding
 import com.example.apiretrofitktor.ui.model.PokemonItem
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.request.get
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy {
@@ -42,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         initObserveData()
         initView()
     }
-
     private fun initViewModel() {
         val retrofitService = RetrofitService(ServiceLocatorAPI.getApiService())
         viewModel =

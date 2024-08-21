@@ -6,6 +6,8 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ServiceLocatorAPI.getApiService()
+        ServiceLocatorAPI.apply {
+            getApiService()
+        }
     }
 }
