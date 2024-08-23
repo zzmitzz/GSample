@@ -1,0 +1,22 @@
+package com.example.apiretrofitktor.data.local
+
+import com.example.apiretrofitktor.data.local.entity.PokemonEntity
+
+
+interface LocalService{
+    suspend fun getAllPokemon(): List<PokemonEntity>
+
+    suspend fun getPokemonById(id: Int): PokemonEntity
+
+    suspend fun insertAllPokemon(list: List<PokemonEntity>): List<Long>
+}
+
+class LocalDataSource(
+    private val localService: LocalService
+) {
+    suspend fun getAllPokemon() = localService.getAllPokemon()
+
+    suspend fun getPokemonById(id: Int) = localService.getPokemonById(id)
+
+    suspend fun insertAllPokemon(list: List<PokemonEntity>) = localService.insertAllPokemon(list)
+}

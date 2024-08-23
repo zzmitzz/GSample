@@ -1,4 +1,4 @@
-package com.example.apiretrofitktor.data.model
+package com.example.apiretrofitktor.data.remote.model
 
 import kotlinx.serialization.Serializable
 

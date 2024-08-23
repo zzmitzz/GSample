@@ -1,7 +1,7 @@
 package com.example.apiretrofitktor.data.remote.ktor
 
-import com.example.apiretrofitktor.ServiceLocatorAPI
-import com.example.apiretrofitktor.data.model.Response
+import com.example.apiretrofitktor.data.ServiceLocatorAPI
+import com.example.apiretrofitktor.data.remote.model.Response
 import com.example.apiretrofitktor.data.remote.NetworkService
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

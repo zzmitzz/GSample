@@ -1,5 +1,8 @@
-package com.example.apiretrofitktor
+package com.example.apiretrofitktor.data
 
+import android.content.Context
+import com.example.apiretrofitktor.data.local.room.PokemonLocalDAO
+import com.example.apiretrofitktor.data.local.room.RoomBuilder
 import com.example.apiretrofitktor.data.remote.ktor.KtorClient
 import com.example.apiretrofitktor.data.remote.retrofit.ApiServicePokemon
 import okhttp3.OkHttpClient
@@ -12,8 +15,9 @@ object ServiceLocatorAPI {
     var API_LINK: String = "https://pokeapi.co/api/v2/"
     var retrofit : Retrofit? = null
     var ktorClient: KtorClient? = null
-
+    var localDB: PokemonLocalDAO? = null
     val httpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
+
     private val okHttpClient: OkHttpClient =
         OkHttpClient
             .Builder()
@@ -46,5 +50,10 @@ object ServiceLocatorAPI {
             ktorClient = KtorClient()
         }
         return ktorClient!!
+    }
+
+    fun initRoomDB(applicationContext: Context): PokemonLocalDAO?{
+        localDB = RoomBuilder.getInstance(applicationContext).pokemonLocalDAO()
+        return localDB
     }
 }

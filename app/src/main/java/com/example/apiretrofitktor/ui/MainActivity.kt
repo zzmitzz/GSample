@@ -1,28 +1,24 @@
 package com.example.apiretrofitktor.ui
 
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.example.apiretrofitktor.PokemonViewModelFactory
 import com.example.apiretrofitktor.R
-import com.example.apiretrofitktor.ServiceLocatorAPI
+import com.example.apiretrofitktor.data.ServiceLocatorAPI
 import com.example.apiretrofitktor.base.LoadingDialog
-import com.example.apiretrofitktor.data.model.toPokemonItem
+import com.example.apiretrofitktor.data.PokemonRepository
+import com.example.apiretrofitktor.data.local.LocalDataSource
+import com.example.apiretrofitktor.data.local.room.RoomBuilder
+import com.example.apiretrofitktor.data.remote.NetworkDataSource
+import com.example.apiretrofitktor.data.remote.model.Pokemon
+import com.example.apiretrofitktor.data.remote.model.toPokemonItem
 import com.example.apiretrofitktor.data.remote.retrofit.RetrofitService
 import com.example.apiretrofitktor.databinding.ActivityMainBinding
-import com.example.apiretrofitktor.ui.model.PokemonItem
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.request.get
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy {
@@ -49,11 +45,16 @@ class MainActivity : AppCompatActivity() {
         initView()
     }
     private fun initViewModel() {
+
         val retrofitService = RetrofitService(ServiceLocatorAPI.getApiService())
+        val ktorClient = ServiceLocatorAPI.initKtorClient()
+        val networkDataSource = NetworkDataSource(ktorClient)
+        val localDataSource = LocalDataSource(RoomBuilder.getInstance(this).pokemonLocalDAO())
+        val pokemonRepository = PokemonRepository(networkDataSource, localDataSource)
         viewModel =
             ViewModelProvider(
                 this,
-                PokemonViewModelFactory(retrofitService),
+                PokemonViewModelFactory(pokemonRepository),
             )[PokemonViewModel::class.java]
     }
     private fun initView() {
@@ -75,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                         viewModel.isLoadMore.value = true
                         offset += limit
                         if(offset < 1320){
-                            viewModel.loadMorePokemon(limit,offset)
+                            viewModel.getPokemon(limit,offset)
                         }
                     }
                 }
@@ -90,11 +91,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObserveData() {
-        viewModel.response.observe(this) {
-            mAdapter.setData(it.results.map { it.toPokemonItem() })
-        }
-        viewModel.cachePokemon.observe(this){
-            mAdapter.addMoreItem(it.results.map { it.toPokemonItem() })
+        viewModel.listPokemon.observe(this){ list ->
+            mAdapter.addMoreItem(list.map { 
+                it.toPokemonItem()
+            })
         }
         viewModel.isLoading.observe(this) {
             if (it) {

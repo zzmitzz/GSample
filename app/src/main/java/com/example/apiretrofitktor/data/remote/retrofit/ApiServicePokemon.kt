@@ -1,6 +1,6 @@
 package com.example.apiretrofitktor.data.remote.retrofit
 
-import com.example.apiretrofitktor.data.model.Response
+import com.example.apiretrofitktor.data.remote.model.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 

@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlinx-serialization")
+    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -36,7 +38,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -61,6 +65,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.retrofit)
     implementation(libs.glide)
+    implementation(libs.androidx.room.common)
     annotationProcessor(libs.glide.annotations)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -73,4 +78,8 @@ dependencies {
     implementation(libs.ktor.logging)
     implementation(libs.ktor.okHttp)
     implementation(libs.ktor.contentNegotiation)
+    // room
+    implementation(libs.room.runtime)
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation(libs.room.ktx)
 }
