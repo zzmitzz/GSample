@@ -13,6 +13,7 @@ class PokemonRepository(
     suspend fun getPokemonRemote( limit: Int, offset: Int) = remoteDataSource.getPokemonList(limit, offset)
     suspend fun insertAllPokemon(list: List<PokemonEntity>) = localDataSource.insertAllPokemon(list)
     suspend fun getPokemonLocal() = localDataSource.getAllPokemon()
+    suspend fun deleteRoomDb() = localDataSource.dumpTable()
 }
 
 

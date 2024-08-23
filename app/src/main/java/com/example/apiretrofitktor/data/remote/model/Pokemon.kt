@@ -2,8 +2,14 @@ package com.example.apiretrofitktor.data.remote.model
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.example.apiretrofitktor.R
 import com.example.apiretrofitktor.data.local.entity.PokemonEntity
 import com.example.apiretrofitktor.ui.model.PokemonItem
 import kotlinx.serialization.Serializable
@@ -16,40 +22,23 @@ data class Pokemon(
     val url: String
 )
 
-fun Pokemon.toPokemonItem() : PokemonItem {
+fun Pokemon.toPokemonItem(image: Bitmap?) : PokemonItem {
     val id = url.split("/".toRegex()).dropLast(1).last().toInt()
     Log.d("TAG", id.toString())
+    if(image != null){
+         return PokemonItem(
+            image = image,
+            name = name,
+            id = id
+        )
+    }
     return PokemonItem(
-        image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png",
+        image = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888),
         name = name,
         id = id
     )
 }
 
-fun Pokemon.toPokemonEntity(context: Context) : PokemonEntity {
-    return PokemonEntity(
-        id = url.split("/".toRegex()).dropLast(1).last().toInt(),
-        name = name,
-        image = Glide.with(context)
-            .asBitmap()
-            .load(imageUrl)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    val byteArray = bitmapToByteArray(resource)
-                    callback(byteArray)
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    // Handle placeholder if needed
-                }
-
-                override fun onLoadFailed(errorDrawable: Drawable?) {
-                    super.onLoadFailed(errorDrawable)
-                    callback(null)  // Handle failure
-                }
-            })
-    )
-}
 
 private fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
     val byteArrayOutputStream = ByteArrayOutputStream()

@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.apiretrofitktor.data.local.entity.PokemonEntity
 
 
-@Database(entities = [PokemonEntity::class], version = 1)
+@Database(entities = [PokemonEntity::class], version = 2)
 abstract class AppDataBase: RoomDatabase() {
     abstract fun pokemonLocalDAO(): PokemonLocalDAO
 }

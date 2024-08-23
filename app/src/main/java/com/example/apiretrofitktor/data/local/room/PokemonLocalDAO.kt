@@ -1,6 +1,8 @@
+
 package com.example.apiretrofitktor.data.local.room
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -17,4 +19,10 @@ interface PokemonLocalDAO : LocalService {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     override suspend fun insertAllPokemon(list: List<PokemonEntity>): List<Long>
+
+    @Delete
+    override suspend fun deletePokemon(pokemonEntity: PokemonEntity)
+
+    @Query("Delete FROM pokemon_character")
+    override suspend fun dumpTable()
 }

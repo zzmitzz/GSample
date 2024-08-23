@@ -8,12 +8,24 @@
     android:padding="20dp"
     android:orientation="vertical"
     tools:context=".ui.MainActivity">
-
-    <ImageView
-        android:id="@+id/backBtn"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/arrow_back_ios_24px"/>
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_back_ios_24px"/>
+        <Space
+            android:layout_width="200dp"
+            android:layout_height="0dp"/>
+        <Button
+            android:id="@+id/nuke_db"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nuke RoomDB"/>
+    </LinearLayout>
     <TextView
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
