@@ -5,8 +5,9 @@ import com.example.apiretrofitktor.data.local.entity.PokemonEntity
 import com.example.apiretrofitktor.data.remote.NetworkDataSource
 import com.example.apiretrofitktor.data.remote.NetworkService
 import com.example.apiretrofitktor.data.remote.model.Response
+import javax.inject.Inject
 
-class PokemonRepository(
+class PokemonRepository @Inject constructor(
     private val remoteDataSource: NetworkDataSource,
     private val localDataSource: LocalDataSource
 ) {

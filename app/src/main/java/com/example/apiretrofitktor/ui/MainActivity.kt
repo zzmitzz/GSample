@@ -16,21 +16,26 @@ import com.example.apiretrofitktor.PokemonViewModelFactory
 import com.example.apiretrofitktor.R
 import com.example.apiretrofitktor.base.LoadingDialog
 import com.example.apiretrofitktor.data.PokemonRepository
-import com.example.apiretrofitktor.data.ServiceLocatorAPI
-import com.example.apiretrofitktor.data.local.LocalDataSource
-import com.example.apiretrofitktor.data.local.room.RoomBuilder
-import com.example.apiretrofitktor.data.remote.NetworkDataSource
-import com.example.apiretrofitktor.data.remote.retrofit.RetrofitService
+import com.example.apiretrofitktor.data.remote.retrofit.ApiServicePokemon
 import com.example.apiretrofitktor.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-    private lateinit var viewModel: PokemonViewModel
+    lateinit var viewModel: PokemonViewModel
+
+    @Inject
+    lateinit var retrofit: ApiServicePokemon
+
+    @Inject
+    lateinit var pokemonRepository: PokemonRepository
     private lateinit var mAdapter: PokemonAdapter
     private var offset = 0
     private var limit = 7
@@ -53,11 +58,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-//        val ktorClient = ServiceLocatorAPI.initKtorClient()
-        val retrofit = RetrofitService(ServiceLocatorAPI.getApiService())
-        val networkDataSource = NetworkDataSource(retrofit)
-        val localDataSource = LocalDataSource(RoomBuilder.getInstance(this).pokemonLocalDAO())
-        val pokemonRepository = PokemonRepository(networkDataSource, localDataSource)
         viewModel =
             ViewModelProvider(
                 this,
@@ -98,11 +98,16 @@ class MainActivity : AppCompatActivity() {
                                 viewModel.isLoadMore.value = true
                                 offset += limit
                                 if (offset < 1320) {
-                                    try{
+                                    try {
                                         viewModel.getRemotePokemon(limit, offset)
-                                    }catch (e: Exception){
+                                    } catch (e: Exception) {
                                         Log.d("Error", "Error: $e")
-                                        Toast.makeText(this@MainActivity, "No connection", Toast.LENGTH_SHORT).show()
+                                        Toast
+                                            .makeText(
+                                                this@MainActivity,
+                                                "No connection",
+                                                Toast.LENGTH_SHORT,
+                                            ).show()
                                     }
                                 }
                             }

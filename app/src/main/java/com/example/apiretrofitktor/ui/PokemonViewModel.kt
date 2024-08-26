@@ -13,15 +13,19 @@ import com.example.apiretrofitktor.data.local.entity.toPokemonItem
 import com.example.apiretrofitktor.data.remote.model.toPokemonItem
 import com.example.apiretrofitktor.ui.model.PokemonItem
 import com.example.apiretrofitktor.ui.model.toPokemonEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URL
+import javax.inject.Inject
 
 
-class PokemonViewModel(
-    private val pokemonRepository: PokemonRepository
+@HiltViewModel
+class PokemonViewModel @Inject constructor(
+    val pokemonRepository: PokemonRepository
 ) : ViewModel() {
+
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 

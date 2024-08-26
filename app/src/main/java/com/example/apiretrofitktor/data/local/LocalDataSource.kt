@@ -1,6 +1,7 @@
 package com.example.apiretrofitktor.data.local
 
 import com.example.apiretrofitktor.data.local.entity.PokemonEntity
+import javax.inject.Inject
 
 
 interface LocalService{
@@ -15,7 +16,7 @@ interface LocalService{
     suspend fun dumpTable()
 }
 
-class LocalDataSource(
+class LocalDataSource @Inject constructor(
     private val localService: LocalService
 ) {
     suspend fun getAllPokemon() = localService.getAllPokemon()

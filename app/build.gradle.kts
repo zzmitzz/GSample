@@ -7,8 +7,12 @@ plugins {
     id("kotlinx-serialization")
     id("kotlin-kapt")
     id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
+    id("dagger.hilt.android.plugin")
 }
-
+kapt {
+    correctErrorTypes = true
+}
 android {
     packagingOptions {
         resources.excludes.apply {
@@ -52,7 +56,9 @@ android {
         viewBinding = true
     }
 }
-
+hilt {
+    enableAggregatingTask = true
+}
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -80,6 +86,12 @@ dependencies {
     implementation(libs.ktor.contentNegotiation)
     // room
     implementation(libs.room.runtime)
-    kapt("androidx.room:room-compiler:2.6.1")
+    kapt(libs.sqlite.jdbc)
+    kapt(libs.androidx.room.compiler.v261)
     implementation(libs.room.ktx)
+    // hilt
+    kapt(libs.androidx.hilt.compiler)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
 }
