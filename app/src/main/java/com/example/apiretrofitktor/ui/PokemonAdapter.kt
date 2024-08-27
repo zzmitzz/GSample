@@ -11,12 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.apiretrofitktor.R
 import com.example.apiretrofitktor.databinding.PokemonItemCardBinding
-import com.example.apiretrofitktor.ui.model.PokemonItem
+import com.example.apiretrofitktor.ui.model.Pokemon
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class PokemonAdapter(
-    val context: Context,
+class PokemonAdapter @Inject constructor(
+    @ApplicationContext val context: Context,
 ) : RecyclerView.Adapter<PokemonAdapter.PokeVH>() {
-    private var data: MutableList<PokemonItem> = mutableListOf()
+    private var data: MutableList<Pokemon> = mutableListOf()
     companion object{
         val listColor = listOf(
             R.color.GTextView1,
@@ -27,11 +29,11 @@ class PokemonAdapter(
         )
     }
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(data: List<PokemonItem>) {
+    fun setData(data: List<Pokemon>) {
         this.data = data.toMutableList()
         notifyDataSetChanged()
     }
-    fun addMoreItem(newData: List<PokemonItem>) {
+    fun addMoreItem(newData: List<Pokemon>) {
         val size = this.data.size
         this.data.addAll(newData)
         notifyItemRangeInserted(size, newData.size)
@@ -40,7 +42,7 @@ class PokemonAdapter(
         private val binding: PokemonItemCardBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("DefaultLocale")
-        fun bind(item: PokemonItem) {
+        fun bind(item: Pokemon) {
             binding.apply {
                 viewContainer.setBackgroundColor(ContextCompat.getColor(context, listColor[adapterPosition % 5]))
                 pokemonName.text = item.name

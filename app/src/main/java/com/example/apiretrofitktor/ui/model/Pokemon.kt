@@ -4,13 +4,13 @@ import android.graphics.Bitmap
 import com.example.apiretrofitktor.data.local.entity.PokemonEntity
 import java.io.ByteArrayOutputStream
 
-data class PokemonItem (
+data class Pokemon (
     val image: Bitmap,
     val name: String,
     val id: Int
 )
 
-fun PokemonItem.toPokemonEntity(): PokemonEntity {
+fun Pokemon.toPokemonEntity(): PokemonEntity {
     return PokemonEntity(
         name = name,
         image = bitmapToByteArray(image)

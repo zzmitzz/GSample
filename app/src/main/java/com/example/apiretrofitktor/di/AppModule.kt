@@ -3,13 +3,11 @@ package com.example.apiretrofitktor.di
 import android.content.Context
 import androidx.room.Room
 import com.example.apiretrofitktor.data.Constant.API_LINK
-import com.example.apiretrofitktor.data.Constant.httpLoggingInterceptor
-import com.example.apiretrofitktor.data.local.LocalService
+import com.example.apiretrofitktor.data.PokemonRepository
+import com.example.apiretrofitktor.data.PokemonRepositoryImpl
 import com.example.apiretrofitktor.data.local.room.AppDataBase
 import com.example.apiretrofitktor.data.local.room.PokemonLocalDAO
-import com.example.apiretrofitktor.data.remote.NetworkService
 import com.example.apiretrofitktor.data.remote.retrofit.ApiServicePokemon
-import com.example.apiretrofitktor.data.remote.retrofit.RetrofitService
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -17,6 +15,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -26,6 +25,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    val httpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
     private val okHttpClient: OkHttpClient =
         OkHttpClient
             .Builder()
@@ -79,10 +79,7 @@ object AppModule {
 //Repositories will live same as the activity that requires them
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
-
     @Binds
-    abstract fun provideNetworkServiceImpl(retrofit: RetrofitService): NetworkService
+    abstract fun pokemonRepoImpProvider(pokemonRepositoryImpl: PokemonRepositoryImpl): PokemonRepository
 
-    @Binds
-    abstract fun provideLocalService(pokemonLocalDAO: PokemonLocalDAO): LocalService
 }

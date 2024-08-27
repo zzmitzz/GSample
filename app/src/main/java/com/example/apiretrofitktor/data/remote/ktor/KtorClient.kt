@@ -1,8 +1,7 @@
 package com.example.apiretrofitktor.data.remote.ktor
 
 import com.example.apiretrofitktor.data.Constant
-import com.example.apiretrofitktor.data.remote.model.Response
-import com.example.apiretrofitktor.data.remote.NetworkService
+import com.example.apiretrofitktor.data.remote.model.PokemonResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.okhttp.OkHttp
@@ -15,8 +14,10 @@ import io.ktor.client.request.request
 import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
-class KtorClient : NetworkService {
+
+class KtorClient @Inject constructor()   {
     private val client =
         HttpClient(OkHttp) {
             defaultRequest {
@@ -45,10 +46,10 @@ class KtorClient : NetworkService {
             }
         }
 
-    override suspend fun getPokemonList(
+    suspend fun getPokemonList(
         limit: Int,
         offset: Int,
-    ): Response {
+    ): PokemonResponse {
         return client.request("/api/v2/pokemon?limit=$limit&offset=$offset"){
             method = HttpMethod.Get
         }.body()
