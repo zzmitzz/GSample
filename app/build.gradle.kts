@@ -15,12 +15,7 @@ kapt {
 }
 android {
     packagingOptions {
-        resources.excludes.apply {
-            add("META-INF/LICENSE")
-            add("META-INF/*.properties")
-            add("META-INF/AL2.0")
-            add("META-INF/LGPL2.1")
-        }
+        resources.excludes.add("META-INF/*")
     }
     namespace = "com.example.apiretrofitktor"
     compileSdk = 34
@@ -72,6 +67,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.glide)
     implementation(libs.androidx.room.common)
+    implementation(libs.core.ktx)
+    testImplementation(libs.junit.jupiter)
+    androidTestImplementation(libs.junit.jupiter)
     annotationProcessor(libs.glide.annotations)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -93,5 +91,9 @@ dependencies {
     kapt(libs.androidx.hilt.compiler)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.android.compiler)
+    implementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 
 }

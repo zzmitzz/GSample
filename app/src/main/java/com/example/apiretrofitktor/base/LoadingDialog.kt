@@ -9,8 +9,14 @@ import android.view.Gravity
 import android.view.Window
 import android.view.WindowManager
 import com.example.apiretrofitktor.R
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ActivityScoped
+import javax.inject.Inject
 
-class LoadingDialog(var context: Context) {
+
+class LoadingDialog @Inject constructor(
+    @ActivityContext var context: Context) {
     private var dialog: Dialog? = null
     private var run: Runnable? = null
     private var handler: Handler? = null

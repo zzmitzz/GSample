@@ -12,6 +12,7 @@ data class Pokemon (
 
 fun Pokemon.toPokemonEntity(): PokemonEntity {
     return PokemonEntity(
+        id = id,
         name = name,
         image = bitmapToByteArray(image)
     )
