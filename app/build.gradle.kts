@@ -9,6 +9,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     id("dagger.hilt.android.plugin")
+    alias(libs.plugins.baselineprofile)
 }
 kapt {
     correctErrorTypes = true
@@ -36,6 +37,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        create("benchmark") {
+            initWith(buildTypes.getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+            isDebuggable = false
         }
 
     }
@@ -68,6 +75,7 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.androidx.room.common)
     implementation(libs.core.ktx)
+    implementation(libs.androidx.profileinstaller)
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.junit.jupiter)
     annotationProcessor(libs.glide.annotations)
@@ -84,6 +92,7 @@ dependencies {
     implementation(libs.ktor.contentNegotiation)
     // room
     implementation(libs.room.runtime)
+    "baselineProfile"(project(":baselineprofile"))
     kapt(libs.sqlite.jdbc)
     kapt(libs.androidx.room.compiler.v261)
     implementation(libs.room.ktx)

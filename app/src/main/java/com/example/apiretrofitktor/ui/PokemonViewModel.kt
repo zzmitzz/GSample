@@ -18,8 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
-    val pokemonRepositoryImpl: PokemonRepository,
-    val reducer: Collection<PokemonReducer<Mutation, ViewState>>
+    val pokemonRepositoryImpl: PokemonRepository
 ) : ViewModel() {
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
