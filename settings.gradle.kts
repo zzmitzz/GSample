@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "APIRetrofitKtor"
 include(":app")
- 
+include(":baselineprofile")
+include(":benchmark")

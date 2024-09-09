@@ -9,18 +9,14 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     id("dagger.hilt.android.plugin")
+    alias(libs.plugins.baselineprofile)
 }
 kapt {
     correctErrorTypes = true
 }
 android {
     packagingOptions {
-        resources.excludes.apply {
-            add("META-INF/LICENSE")
-            add("META-INF/*.properties")
-            add("META-INF/AL2.0")
-            add("META-INF/LGPL2.1")
-        }
+        resources.excludes.add("META-INF/*")
     }
     namespace = "com.example.apiretrofitktor"
     compileSdk = 34
@@ -41,6 +37,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        create("benchmark") {
+            initWith(buildTypes.getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+            isDebuggable = false
         }
 
     }
@@ -72,6 +74,10 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.glide)
     implementation(libs.androidx.room.common)
+    implementation(libs.core.ktx)
+    implementation(libs.androidx.profileinstaller)
+    testImplementation(libs.junit.jupiter)
+    androidTestImplementation(libs.junit.jupiter)
     annotationProcessor(libs.glide.annotations)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -86,6 +92,7 @@ dependencies {
     implementation(libs.ktor.contentNegotiation)
     // room
     implementation(libs.room.runtime)
+    "baselineProfile"(project(":baselineprofile"))
     kapt(libs.sqlite.jdbc)
     kapt(libs.androidx.room.compiler.v261)
     implementation(libs.room.ktx)
@@ -93,5 +100,9 @@ dependencies {
     kapt(libs.androidx.hilt.compiler)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.android.compiler)
+    implementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 
 }
