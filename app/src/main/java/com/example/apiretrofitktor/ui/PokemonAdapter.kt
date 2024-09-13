@@ -7,6 +7,9 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.AsyncListUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.apiretrofitktor.R
@@ -18,7 +21,17 @@ import javax.inject.Inject
 class PokemonAdapter @Inject constructor(
     @ApplicationContext val context: Context,
 ) : RecyclerView.Adapter<PokemonAdapter.PokeVH>() {
-    private var data: MutableList<Pokemon> = mutableListOf()
+    private var diffUtil = object : DiffUtil.ItemCallback<Pokemon>() {
+        override fun areItemsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean {
+            return oldItem == newItem
+        }
+
+    }
+    private val asyncDataList = AsyncListDiffer<Pokemon>(this,diffUtil)
     companion object{
         val listColor = listOf(
             R.color.GTextView1,
@@ -28,15 +41,12 @@ class PokemonAdapter @Inject constructor(
             R.color.GBackground
         )
     }
-    @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<Pokemon>) {
-        this.data = data.toMutableList()
-        notifyDataSetChanged()
-    }
-    fun addMoreItem(newData: List<Pokemon>) {
-        val size = this.data.size
-        this.data.addAll(newData)
-        notifyItemRangeInserted(size, newData.size)
+        val listData = mutableListOf<Pokemon>().also {
+            it.addAll(asyncDataList.currentList)
+            it.addAll(data)
+        }
+        asyncDataList.submitList(listData)
     }
     inner class PokeVH(
         private val binding: PokemonItemCardBinding,
@@ -65,12 +75,12 @@ class PokemonAdapter @Inject constructor(
         return PokeVH(binding)
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int = asyncDataList.currentList.size
 
     override fun onBindViewHolder(
         holder: PokeVH,
         position: Int,
     ) {
-        holder.bind(data[position])
+        holder.bind(asyncDataList.currentList[position])
     }
 }

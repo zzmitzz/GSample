@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity,"Network error",Toast.LENGTH_SHORT).show()
             }
             if(state.listPokemon.isNotEmpty()){
-                mAdapter.addMoreItem(state.listPokemon)
+                mAdapter.setData(state.listPokemon)
             }
         }
     }
